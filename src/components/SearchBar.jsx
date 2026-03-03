@@ -6,10 +6,13 @@
  * @param {{ onSearch: function, onUseLocation: function }} props
  */
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
+import clsx from "clsx";
 
 function SearchBar({ onSearch, onUseLocation }) {
   const [query, setQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
     const trimmed = query.trim();
@@ -23,13 +26,23 @@ function SearchBar({ onSearch, onUseLocation }) {
   }, [query]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="flex items-center gap-2">
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex items-center gap-2"
+    >
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         placeholder="Search city..."
-        className="bg-white/20 backdrop-blur-sm rounded-2xl px-4 py-3 text-white placeholder-white/60 outline-none focus:bg-white/30 transition-all w-64"
+        className={clsx(
+          "backdrop-blur-sm rounded-2xl px-4 py-3 text-white placeholder-white/60 outline-none transition-all w-64",
+          isFocused ? "ring-2 ring-white/60 bg-white/30" : "bg-white/20",
+        )}
       />
       <button
         onClick={onUseLocation}
@@ -37,7 +50,7 @@ function SearchBar({ onSearch, onUseLocation }) {
       >
         <MapPin size={20} />
       </button>
-    </div>
+    </motion.div>
   );
 }
 

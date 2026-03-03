@@ -4,6 +4,7 @@
  *
  * @param {{ condition: string, children: React.ReactNode }} props
  */
+import { motion } from "framer-motion";
 import clsx from "clsx";
 
 function getGradient(condition) {
@@ -46,14 +47,18 @@ function getGradient(condition) {
 
 function WeatherBackground({ condition, children }) {
   return (
-    <div
+    <motion.div
+      key={condition}
+      initial={{ opacity: 0.8 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.2, ease: "easeInOut" }}
       className={clsx(
         "bg-gradient-to-br min-h-screen transition-all duration-[1200ms]",
         getGradient(condition),
       )}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 

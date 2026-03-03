@@ -4,31 +4,42 @@
  *
  * @param {{ unit: string, onToggle: function }} props
  */
+import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 
 function UnitToggle({ unit, onToggle }) {
   return (
-    <button
-      onClick={onToggle}
-      className="flex items-center rounded-full overflow-hidden text-sm font-semibold text-white shadow-md"
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.3, duration: 0.4 }}
     >
-      <span
-        className={clsx(
-          "px-4 py-2 transition-colors",
-          unit === "celsius" ? "bg-white/40" : "bg-white/10",
-        )}
+      <button
+        onClick={onToggle}
+        className="relative flex items-center rounded-full overflow-hidden text-sm font-semibold text-white shadow-md"
       >
-        °C
-      </span>
-      <span
-        className={clsx(
-          "px-4 py-2 transition-colors",
-          unit === "fahrenheit" ? "bg-white/40" : "bg-white/10",
-        )}
-      >
-        °F
-      </span>
-    </button>
+        <span className="relative z-10 px-4 py-2">
+          {unit === "celsius" && (
+            <motion.div
+              layoutId="activeUnit"
+              className="absolute inset-0 bg-white/40 rounded-full"
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            />
+          )}
+          <span className="relative">°C</span>
+        </span>
+        <span className="relative z-10 px-4 py-2">
+          {unit === "fahrenheit" && (
+            <motion.div
+              layoutId="activeUnit"
+              className="absolute inset-0 bg-white/40 rounded-full"
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            />
+          )}
+          <span className="relative">°F</span>
+        </span>
+      </button>
+    </motion.div>
   );
 }
 

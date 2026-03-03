@@ -4,6 +4,7 @@
  *
  * @param {{ day: { date: string, high: number, low: number, conditionLabel: string, icon: string } }} props
  */
+import { motion } from "framer-motion";
 import {
   Sun,
   CloudSun,
@@ -14,6 +15,11 @@ import {
   CloudSnow,
   CloudLightning,
 } from "lucide-react";
+
+const item = {
+  hidden: { opacity: 0, x: -20 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.3 } },
+};
 
 const iconMap = {
   Sun,
@@ -32,7 +38,10 @@ function ForecastRow({ day }) {
   const IconComponent = iconMap[day.icon] || Cloud;
 
   return (
-    <div className="bg-white/15 backdrop-blur-sm rounded-2xl px-4 py-3 flex items-center justify-between text-white">
+    <motion.div
+      variants={item}
+      className="bg-white/15 backdrop-blur-sm rounded-2xl px-4 py-3 flex items-center justify-between text-white"
+    >
       <span className="w-24 text-sm font-medium">{day.date}</span>
 
       <div className="flex items-center gap-2">
@@ -44,7 +53,7 @@ function ForecastRow({ day }) {
         <span className="font-semibold">{Math.round(day.high)}°</span>
         <span className="text-white/60">{Math.round(day.low)}°</span>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

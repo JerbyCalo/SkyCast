@@ -4,6 +4,7 @@
  *
  * @param {{ weather: object, location: string, unit: string }} props
  */
+import { motion } from "framer-motion";
 import {
   Sun,
   CloudSun,
@@ -34,7 +35,13 @@ function WeatherCard({ weather, location, unit }) {
   const unitLabel = unit === "celsius" ? "°C" : "°F";
 
   return (
-    <div className="bg-white/20 backdrop-blur-md rounded-3xl shadow-xl p-8 text-white text-center w-full max-w-md">
+    <motion.div
+      key={location}
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="bg-white/20 backdrop-blur-md rounded-3xl shadow-xl p-8 text-white text-center w-full max-w-md"
+    >
       <p className="text-lg font-medium mb-1 truncate">{location}</p>
 
       <IconComponent className="mx-auto mb-2" size={64} strokeWidth={1.5} />
@@ -52,7 +59,7 @@ function WeatherCard({ weather, location, unit }) {
         <Wind size={18} />
         <span className="text-sm">{weather.windspeed} km/h</span>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

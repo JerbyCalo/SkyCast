@@ -4,17 +4,28 @@
  *
  * @param {{ forecast: Array, unit: string }} props
  */
+import { motion } from "framer-motion";
 import ForecastRow from "./ForecastRow";
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.05 } },
+};
 
 function ForecastPanel({ forecast, unit }) {
   if (!forecast || forecast.length === 0) return null;
 
   return (
-    <div className="flex flex-col gap-2 w-full max-w-md">
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="show"
+      className="flex flex-col gap-2 w-full max-w-md"
+    >
       {forecast.map((day, index) => (
         <ForecastRow key={index} day={day} unit={unit} />
       ))}
-    </div>
+    </motion.div>
   );
 }
 
