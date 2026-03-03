@@ -30,7 +30,7 @@ function SearchBar({ onSearch, onUseLocation }) {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex items-center gap-2"
+      className="flex items-center gap-2 w-full max-w-sm sm:max-w-md"
     >
       <input
         type="text"
@@ -40,7 +40,7 @@ function SearchBar({ onSearch, onUseLocation }) {
         onBlur={() => setIsFocused(false)}
         placeholder="Search city..."
         className={clsx(
-          "backdrop-blur-sm rounded-2xl px-4 py-3 text-white placeholder-white/60 outline-none transition-all w-64",
+          "backdrop-blur-sm rounded-2xl px-4 py-3 text-white placeholder-white/60 outline-none transition-all w-48 sm:w-64",
           isFocused ? "ring-2 ring-white/60 bg-white/30" : "bg-white/20",
         )}
       />

@@ -40,14 +40,16 @@ function WeatherCard({ weather, location, unit }) {
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="bg-white/20 backdrop-blur-md rounded-3xl shadow-xl p-8 text-white text-center w-full max-w-md"
+      className="bg-white/20 backdrop-blur-md rounded-3xl shadow-xl p-5 sm:p-8 text-white text-center w-full max-w-sm sm:max-w-md"
     >
-      <p className="text-lg font-medium mb-1 truncate">{location}</p>
+      <p className="text-xl sm:text-2xl font-medium mb-1 truncate">
+        {location}
+      </p>
 
       <IconComponent className="mx-auto mb-2" size={64} strokeWidth={1.5} />
 
       <div className="flex items-start justify-center">
-        <span className="text-8xl font-bold leading-none">
+        <span className="text-6xl sm:text-8xl font-bold leading-none">
           {Math.round(weather.temp)}
         </span>
         <span className="text-3xl font-semibold mt-2">{unitLabel}</span>

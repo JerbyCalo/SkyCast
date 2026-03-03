@@ -40,7 +40,7 @@ function App() {
         >
           <WeatherBackground condition={weather?.conditionLabel}>
             <Toaster position="top-center" />
-            <div className="min-h-screen flex flex-col items-center justify-center gap-6 p-6">
+            <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-4 sm:p-6 sm:gap-6">
               <SearchBar onSearch={searchCity} onUseLocation={useMyLocation} />
               <UnitToggle unit={unit} onToggle={toggleUnit} />
               <WeatherCard weather={weather} location={location} unit={unit} />
