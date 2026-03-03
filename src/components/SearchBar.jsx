@@ -1,5 +1,5 @@
 /**
- * SearchBar — City search input with built-in 300ms debounce and a
+ * SearchBar — City search input with built-in 500ms debounce and a
  * geolocation button. Calls onSearch after the user stops typing and
  * onUseLocation when the MapPin button is clicked.
  *
@@ -11,31 +11,37 @@ import { MapPin } from "lucide-react";
 import clsx from "clsx";
 
 function SearchBar({ onSearch, onUseLocation }) {
-  const [query, setQuery] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    const trimmed = query.trim();
-    if (!trimmed) return;
-
     const timer = setTimeout(() => {
-      onSearch(trimmed);
-    }, 300);
+      const trimmed = inputValue.trim();
+      if (trimmed) onSearch(trimmed);
+    }, 1000);
 
     return () => clearTimeout(timer);
-  }, [query]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [inputValue]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      const trimmed = inputValue.trim();
+      if (trimmed) onSearch(trimmed);
+    }
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex items-center gap-2 w-full max-w-sm sm:max-w-md"
+      className="flex items-center justify-center gap-2 w-full max-w-sm sm:max-w-md mx-auto"
     >
       <input
         type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholder="Search city..."

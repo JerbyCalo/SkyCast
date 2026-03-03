@@ -123,7 +123,7 @@ export function useWeather() {
   }, [unit, fetchWithCoords]);
 
   useEffect(() => {
-    searchCity("Cagayan de Oro");
+    searchCity("Manila");
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
