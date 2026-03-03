@@ -2,7 +2,7 @@
  * ForecastRow — A single horizontal pill card showing one day's forecast
  * including day name, condition icon, high temp, and low temp.
  *
- * @param {{ day: { date: string, high: number, low: number, conditionLabel: string, icon: string } }} props
+ * @param {{ day: object, onClick: function }} props
  */
 import { motion } from "framer-motion";
 import {
@@ -14,6 +14,7 @@ import {
   CloudRain,
   CloudSnow,
   CloudLightning,
+  ChevronRight,
 } from "lucide-react";
 
 const item = {
@@ -32,7 +33,7 @@ const iconMap = {
   CloudLightning,
 };
 
-function ForecastRow({ day }) {
+function ForecastRow({ day, onClick }) {
   if (!day) return null;
 
   const IconComponent = iconMap[day.icon] || Cloud;
@@ -40,7 +41,8 @@ function ForecastRow({ day }) {
   return (
     <motion.div
       variants={item}
-      className="bg-white/15 backdrop-blur-sm rounded-2xl px-4 py-3 flex items-center justify-between text-white"
+      onClick={() => onClick?.(day)}
+      className="bg-white/15 hover:bg-white/25 backdrop-blur-sm rounded-2xl px-4 py-3 flex items-center justify-between text-white cursor-pointer active:scale-[0.98] transition-all"
     >
       <span className="w-24 text-sm font-medium">{day.date}</span>
 
@@ -52,6 +54,7 @@ function ForecastRow({ day }) {
       <div className="flex items-center gap-3 text-sm">
         <span className="font-semibold">{Math.round(day.high)}°</span>
         <span className="text-white/60">{Math.round(day.low)}°</span>
+        <ChevronRight size={16} className="text-white/50" />
       </div>
     </motion.div>
   );

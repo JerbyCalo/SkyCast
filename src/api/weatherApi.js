@@ -17,6 +17,8 @@ export async function fetchWeather(lat, lon, unit = "celsius") {
         "weathercode",
         "precipitation_sum",
       ].join(","),
+      hourly:
+        "temperature_2m,weathercode,precipitation_probability,windspeed_10m",
     },
   });
 

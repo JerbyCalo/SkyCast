@@ -12,6 +12,7 @@ export function useWeather() {
   const [unit, setUnit] = useState("celsius");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hourlyData, setHourlyData] = useState(null);
 
   const coordsRef = useRef(null);
 
@@ -40,6 +41,33 @@ export function useWeather() {
     });
 
     setForecast(days);
+
+    // Parse hourly data grouped by formatted date
+    if (data.hourly) {
+      const grouped = {};
+      data.hourly.time.forEach((isoStr, i) => {
+        const dateKey = formatDate(isoStr.split("T")[0]);
+        const hourDate = new Date(isoStr);
+        const hourLabel = hourDate.toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true,
+        });
+        const hourInfo = getWeatherInfo(data.hourly.weathercode[i]);
+        const entry = {
+          hour: hourLabel,
+          temp: data.hourly.temperature_2m[i],
+          weathercode: data.hourly.weathercode[i],
+          conditionLabel: hourInfo.label,
+          icon: hourInfo.icon,
+          precipitation: data.hourly.precipitation_probability[i],
+          windspeed: data.hourly.windspeed_10m[i],
+        };
+        if (!grouped[dateKey]) grouped[dateKey] = [];
+        grouped[dateKey].push(entry);
+      });
+      setHourlyData(grouped);
+    }
   }, []);
 
   const fetchWithCoords = useCallback(
@@ -133,6 +161,7 @@ export function useWeather() {
     unit,
     loading,
     error,
+    hourlyData,
     searchCity,
     useMyLocation,
     toggleUnit,

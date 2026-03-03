@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWeather } from "./hooks/useWeather";
@@ -7,6 +8,7 @@ import WeatherCard from "./components/WeatherCard";
 import ForecastPanel from "./components/ForecastPanel";
 import UnitToggle from "./components/UnitToggle";
 import SearchBar from "./components/SearchBar";
+import HourlyModal from "./components/HourlyModal";
 
 function App() {
   const {
@@ -15,10 +17,13 @@ function App() {
     location,
     unit,
     loading,
+    hourlyData,
     searchCity,
     useMyLocation,
     toggleUnit,
   } = useWeather();
+
+  const [selectedDay, setSelectedDay] = useState(null);
 
   return (
     <AnimatePresence mode="wait">
@@ -44,8 +49,22 @@ function App() {
               <SearchBar onSearch={searchCity} onUseLocation={useMyLocation} />
               <UnitToggle unit={unit} onToggle={toggleUnit} />
               <WeatherCard weather={weather} location={location} unit={unit} />
-              <ForecastPanel forecast={forecast} unit={unit} />
+              <ForecastPanel
+                forecast={forecast}
+                unit={unit}
+                onDayClick={(day) => setSelectedDay(day)}
+              />
             </div>
+            <AnimatePresence>
+              {selectedDay && (
+                <HourlyModal
+                  day={selectedDay}
+                  hours={hourlyData?.[selectedDay.date] ?? []}
+                  unit={unit}
+                  onClose={() => setSelectedDay(null)}
+                />
+              )}
+            </AnimatePresence>
           </WeatherBackground>
         </motion.div>
       )}
