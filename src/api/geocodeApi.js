@@ -23,3 +23,22 @@ export async function geocodeCity(cityName) {
     label: first.formatted,
   };
 }
+
+export async function geocodeSuggestions(query) {
+  const response = await axios.get(OPENCAGE_URL, {
+    params: {
+      q: query,
+      key: import.meta.env.VITE_OPENCAGE_API_KEY,
+      limit: 5,
+    },
+  });
+
+  const results = response.data.results;
+  if (!results) return [];
+
+  return results.map((r) => ({
+    lat: r.geometry.lat,
+    lon: r.geometry.lng,
+    label: r.formatted,
+  }));
+}

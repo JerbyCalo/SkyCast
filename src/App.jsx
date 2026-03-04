@@ -19,6 +19,7 @@ function App() {
     loading,
     hourlyData,
     searchCity,
+    searchByCoords,
     useMyLocation,
     toggleUnit,
   } = useWeather();
@@ -46,7 +47,13 @@ function App() {
           <WeatherBackground condition={weather?.conditionLabel}>
             <Toaster position="top-center" />
             <div className="min-h-screen flex flex-col items-center justify-center gap-4 p-4 sm:p-6 sm:gap-6">
-              <SearchBar onSearch={searchCity} onUseLocation={useMyLocation} />
+              <SearchBar
+                onSearch={searchCity}
+                onUseLocation={useMyLocation}
+                onSelectSuggestion={({ lat, lon, label }) =>
+                  searchByCoords(lat, lon, label)
+                }
+              />
               <UnitToggle unit={unit} onToggle={toggleUnit} />
               <WeatherCard weather={weather} location={location} unit={unit} />
               <ForecastPanel

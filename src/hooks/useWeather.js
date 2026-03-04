@@ -112,6 +112,26 @@ export function useWeather() {
     [unit, processWeatherData],
   );
 
+  const searchByCoords = useCallback(
+    async (lat, lon, label) => {
+      setLoading(true);
+      setError(null);
+      coordsRef.current = { lat, lon };
+      setLocation(label);
+      try {
+        const data = await fetchWeather(lat, lon, unit);
+        processWeatherData(data);
+      } catch (err) {
+        const msg = "Connection error. Check your internet.";
+        setError(msg);
+        toast.error(msg);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [unit, processWeatherData],
+  );
+
   const useMyLocation = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -163,6 +183,7 @@ export function useWeather() {
     error,
     hourlyData,
     searchCity,
+    searchByCoords,
     useMyLocation,
     toggleUnit,
   };
